@@ -1661,8 +1661,10 @@ public class ImmersionBar {
                     }
                 };
             }
-            mActivity.getContentResolver().registerContentObserver(Settings.System.getUriFor
-                    (NAVIGATIONBAR_IS_MIN), true, mBarParams.navigationStatusObserver);
+            if (mActivity.getContentResolver() != null) {
+                mActivity.getContentResolver().registerContentObserver(Settings.System.getUriFor
+                        (NAVIGATIONBAR_IS_MIN), true, mBarParams.navigationStatusObserver);
+            }
         }
     }
 
@@ -1673,8 +1675,11 @@ public class ImmersionBar {
     private void unRegisterEMUI3_x() {
         if ((OSUtils.isEMUI3_1() || OSUtils.isEMUI3_0()) && mConfig.hasNavigtionBar()
                 && mBarParams.navigationBarEnable && mBarParams.navigationBarWithKitkatEnable) {
-            if (mBarParams.navigationStatusObserver != null && mBarParams.navigationBarView != null)
-                mActivity.getContentResolver().unregisterContentObserver(mBarParams.navigationStatusObserver);
+            if (mBarParams.navigationStatusObserver != null && mBarParams.navigationBarView != null) {
+                if (mActivity.getContentResolver() != null) {
+                    mActivity.getContentResolver().unregisterContentObserver(mBarParams.navigationStatusObserver);
+                }
+            }
         }
     }
 

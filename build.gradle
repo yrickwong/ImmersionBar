@@ -18,6 +18,13 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
+
+        maven {
+            url "https://maven.byted.org/nexus/content/repositories/ugc_android/"
+        }
+        maven {
+            url "https://maven.byted.org/nexus/content/repositories/ugc_android_snapshot/"
+        }
     }
     tasks.withType(Javadoc) {
         options{ encoding "UTF-8"

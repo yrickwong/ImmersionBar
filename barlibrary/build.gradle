@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+//apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 25
@@ -37,21 +37,30 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-task makeJar(type: Copy) {
-    delete 'build/libs/barlibrary-2.3.0.jar'
-    from('build/intermediates/bundles/default/')
-    into('build/libs/')
-    include('classes.jar')
-    rename('classes.jar', 'barlibrary-2.3.1.jar')
-}
+//task makeJar(type: Copy) {
+//    delete 'build/libs/barlibrary-2.3.0.jar'
+//    from('build/intermediates/bundles/default/')
+//    into('build/libs/')
+//    include('classes.jar')
+//    rename('classes.jar', 'barlibrary-2.3.1.jar')
+//}
+//
+//makeJar.dependsOn(build)
 
-makeJar.dependsOn(build)
+//publish {
+//    userOrg = 'yrickwong'
+//    groupId = 'com.yrickwong.barlibrary'
+//    artifactId = 'barlibrary'
+//    publishVersion = '2.3.1'
+//    desc = 'Android bar management'
+//    website = 'https://github.com/gyf-dev/ImmersionBar'
+//}
 
-publish {
-    userOrg = 'magic-dev'
-    groupId = 'com.gyf.barlibrary'
-    artifactId = 'barlibrary'
-    publishVersion = '2.3.1'
-    desc = 'Android bar management'
-    website = 'https://github.com/gyf-dev/ImmersionBar'
+ext {
+    GROUP = 'com.bytedance.ugc.framework.libs'
+    POM_ARTIFACT_ID = 'immersion-bar'
+    VERSION_NAME = "2.3.1"
 }
+apply from: "https://code.byted.org/ugc-android/compile-script/raw/stable/mavenupload/mavenuploadandroid.gradle"
+
+
