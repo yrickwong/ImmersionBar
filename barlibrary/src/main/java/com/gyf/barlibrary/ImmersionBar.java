@@ -1641,6 +1641,9 @@ public class ImmersionBar {
                 mBarParams.navigationStatusObserver = new ContentObserver(new Handler()) {
                     @Override
                     public void onChange(boolean selfChange) {
+                        if (mActivity == null || mActivity.isFinishing()) {
+                            return;
+                        }
                         int navigationBarIsMin = Settings.System.getInt(mActivity.getContentResolver(),
                                 NAVIGATIONBAR_IS_MIN, 0);
                         if (navigationBarIsMin == 1) {

@@ -59,8 +59,8 @@ dependencies {
 ext {
     GROUP = 'com.bytedance.ugc.framework.libs'
     POM_ARTIFACT_ID = 'immersion-bar'
-    VERSION_NAME = "2.3.2"
+    VERSION_NAME = "2.3.3"
 }
-apply from: "https://code.byted.org/ugc-android/compile-script/raw/stable/mavenupload/mavenuploadandroid.gradle"
+apply from: "upload.gradle"
 
 

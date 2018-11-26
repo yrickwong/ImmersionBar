@@ -1,0 +1,68 @@
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+
+def RELEASE_REPOSITORY_URL = 'https://maven.byted.org/nexus/content/repositories/ugc_android/'
+def SNAPSHOT_REPOSITORY_URL = 'https://maven.byted.org/nexus/content/repositories/ugc_android_snapshot/'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.groupId = GROUP
+            pom.artifactId = POM_ARTIFACT_ID
+            pom.version = VERSION_NAME
+
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                def y = asNode().get("dependencies")
+                def z = y.asType(List)[0].asType(Node)
+                println "\nlishaokai -------------------------------------------\n"
+                println z
+                println "\nlishaokai -------------------------------------------\n"
+
+                def dependenciesNode = null
+                if (z != null) {
+                    dependenciesNode = z
+                } else {
+                    dependenciesNode = asNode().appendNode("dependencies")
+                }
+
+                List<Node> nodeList = dependenciesNode.children()
+                nodeList.each {
+                    def node = it.value().asType(List)
+                    println node
+                    node.each {
+                        def n = it.asType(Node)
+                        println n.name().toString()
+                        println n.value().toString()
+                        def value = n.value().asType(List)
+                        println value.size()
+                        if (n.name().toString().contains("version") &&
+                                value.size() == 1 &&
+                                value.get(0).toString().equals("unspecified")) {
+                            println "replace ..."
+                            value.set(0, "${rootProject.ext.AAR_VERSION}-SNAPSHOT")
+                            n.setValue(value)
+                        }
+
+                        if (n.name().toString().contains("groupId")
+                                && value.size() == 1
+                                && (value.get(0).toString().contains("hotsoon") ||
+                                value.get(0).toString().contains("aweme"))) {
+                            println "replace groupId ..."
+                            value.set(0, "com.bytedance.ugc.framework.libs")
+                            n.setValue(value)
+                        }
+                    }
+                }
+            }
+
+            repository(url: RELEASE_REPOSITORY_URL) {
+                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+            }
+            snapshotRepository(url: SNAPSHOT_REPOSITORY_URL) {
+                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+            }
+        }
+    }
+}
